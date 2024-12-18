@@ -69,7 +69,7 @@ class GetTokenInfoTool(BaseTool):
     def _run(self, content: str):
         """Use this tool."""
 
-        print("GROK TOOL is called")
+        print("GROK AI TOOL is called")
         system_prompt = """You are a cryptocurrency news chatbot, designed to provide the latest and most relevant information about crypto tokens.
         Your main goal is to inform users about market trends, recent token developments, news, and important updates in the cryptocurrency space"""
         data = {
