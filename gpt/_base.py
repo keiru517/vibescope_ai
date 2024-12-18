@@ -27,7 +27,7 @@ class _BaseGPTAgent:
         self.__llm = ChatOpenAI(
             model="gpt-3.5-turbo",
             temperature=0.3,
-            api_key="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",
+            api_key="OPENAI_API_KEY",
         )
         if self.__tools:
             self.__llm = self.__llm.bind_tools(self.__tools)

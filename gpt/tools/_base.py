@@ -89,7 +89,7 @@ class GetTokenInfoTool(BaseTool):
             url="https://api.x.ai/v1/chat/completions",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": "Bearer xai-kq0sSPAcc5wEhygSH9nnopVyZifupdYZXXamUyfUPv25Mw64pBEMtMGIh8m5AvOwGAzudyJduOw1arQv",
+                "Authorization": "Bearer GROK-API-KEY",
             },
             json=data,
         )
