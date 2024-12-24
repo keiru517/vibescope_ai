@@ -1,4 +1,5 @@
 import requests
+import os
 from typing import Optional, Type
 
 from langchain_core.tools import BaseTool
@@ -89,7 +90,7 @@ class GetTokenInfoTool(BaseTool):
             url="https://api.x.ai/v1/chat/completions",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": "Bearer GROK-API-KEY",
+                "Authorization": f"Bearer {os.getenv('GROK_API_KEY')}",
             },
             json=data,
         )
@@ -99,3 +100,101 @@ class GetTokenInfoTool(BaseTool):
             return response.json()["choices"][0]["message"]["content"]
         else:
             return f"Error {response.status_code}: {response.text}"  # Handle errors
+
+
+class CoinMarketCapAPIInput(BaseModel):
+    api_label: str = Field(description="API label to get data from CoinMarketCap API")
+
+
+class CoinMarketCapAPITool(BaseTool):
+    """
+    The CoinMarketCapAPITool is a tool to get cryptocurrency data from CoinMarketCap API.
+
+    Attributes:
+        name: The name of the tool.
+        description: The description of the tool and how to use it.
+        args_schema: The schema for the arguments required by the tool.
+        return_direct: Whether the results should be returned directly.
+        api_map: The map of API endpoints to get data from.
+    """
+
+    # api_map: List of API endpoints to get data from.
+
+    name: str = "CoinMarketCapAPITool"
+    description: str = f"""
+    Tool to get data from CoinMarketCap API.
+
+    How to use this tool:
+    - There is only one required input to trigger this tool.
+        api_label: Required argument, representing the API endpoint to get data from CoinMarketCap API.
+    """
+    args_schema: Type[BaseModel] = CoinMarketCapAPIInput
+    return_direct: bool = True
+    api_map: dict = None
+
+    def __init__(self, api_map: dict):
+        #     # def __init__(self):
+        super(CoinMarketCapAPITool, self).__init__()
+
+        self.api_map = api_map
+
+    def _run(self, api_label: str) -> str:
+        """Use this tool."""
+        print(f"Triggered API: {self.api_map[api_label]}")
+        print("COIN MARKET CAP API TOOL is called", api_label)
+        # base_url = "https://pro-api.coinmarketcap.com/"
+        # url = f"{base_url}{self.api_map[api_label]}"
+        # print("url", url)
+        # return "cool"
+        # response = requests.get(
+        #     url=url,
+        #     headers={"X-CMC_PRO_API_KEY": os.getenv("CMC_API_KEY")},
+        # )
+        # print("Response", response.json())
+        # return response.json()
+
+
+class TokenBallanceInput(BaseModel):
+    wallet_address: str = Field(description="Wallet address to get data from")
+
+
+class GetTokenBallanceTool(BaseTool):
+    """
+    The GetTokenBallanceTool is a tool to get the balance of a token in a wallet address.
+
+    Attributes:
+        name: The name of the tool.
+        description: The description of the tool and how to use it.
+        args_schema: The schema for the arguments required by the tool.
+        return_direct: Whether the results should be returned directly.
+    """
+
+    name: str = "GetTokenBallanceTool"
+    description: str = """
+    Tool to get the balance of a token in a wallet address.
+
+    How to use this tool:
+    - There is only one required input to trigger this tool.
+        wallet_address: Required argument, representing the wallet address to get the balance of the token.
+    """
+    args_schema: Type[BaseModel] = TokenBallanceInput
+    return_direct: bool = True
+
+    def _run(self, wallet_address: str) -> str:
+        """Use this tool."""
+        print("GetTokenBallanceTool is called", wallet_address)
+
+        url = f"https://eth-mainnet.g.alchemy.com/v2/{os.getenv('ALCHEMY_API_KEY')}"
+
+        payload = {
+            "jsonrpc": "2.0",
+            "method": "alchemy_getTokenBalances",
+            "params": [wallet_address, "erc20"],
+            "id": "42",
+        }
+
+        headers = {"Content-Type": "application/json"}
+
+        response = requests.post(url, json=payload, headers=headers)
+        print("Response:", response.json())
+        return response.json()
