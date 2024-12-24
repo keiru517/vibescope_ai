@@ -65,7 +65,7 @@ class _BaseGPTAgent:
 
     def __build_agent(self):
         self.__llm = ChatOpenAI(
-            model="gpt-3.5-turbo",
+            model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
             temperature=0.3,
             api_key=os.getenv("OPENAI_API_KEY"),
         )
