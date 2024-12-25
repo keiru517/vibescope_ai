@@ -33,7 +33,6 @@ class _BaseGPTAgent:
             "content_posts_comments": "/v1/content/posts/comments",
         }
         self.__tools = [
-            # ai.tools.GetWeatherTool(),
             ai.tools.GetTokenInfoTool(),
             # ai.tools.CoinMarketCapAPITool(api_map=api_map),
             # ai.tools.CoinMarketCapAPITool(),
