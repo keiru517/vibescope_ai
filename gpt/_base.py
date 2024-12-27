@@ -34,7 +34,7 @@ class _BaseGPTAgent:
         }
         self.__tools = [
             ai.tools.GetTokenInfoTool(),
-            # ai.tools.CoinMarketCapAPITool(api_map=api_map),
+            ai.tools.CoinMarketCapAPITool(api_map=api_map),
             # ai.tools.CoinMarketCapAPITool(),
             ai.tools.GetTokenBallanceTool(),
         ]
@@ -43,7 +43,9 @@ class _BaseGPTAgent:
         )
         api_map_str = "\n".join([f"{k}: {v}" for k, v in api_map.items()])
         system_prompt = f"""
-        You are a helpful assistant that can help with the following tasks:
+        You are a friendly Web3 Portfolio Agent on a platform called Vibescope.ai, 
+        your job is to ensure that you provide relevant information to the wallet holder
+        and help them with research.
         {prompt}
 
         """
