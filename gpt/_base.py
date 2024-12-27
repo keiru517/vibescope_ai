@@ -34,7 +34,7 @@ class _BaseGPTAgent:
         }
         self.__tools = [
             ai.tools.GetTokenInfoTool(),
-            ai.tools.CoinMarketCapAPITool(api_map=api_map),
+            # ai.tools.CoinMarketCapAPITool(api_map=api_map),
             # ai.tools.CoinMarketCapAPITool(),
             ai.tools.GetTokenBallanceTool(),
         ]
